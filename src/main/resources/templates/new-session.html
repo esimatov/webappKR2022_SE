@@ -1,0 +1,114 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${title}"></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+</head>
+<body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<header th:insert="blocks/header :: header"></header>
+    <div class="container mt-5">
+        <div th:if="${mes}">
+            <span th:text="${mes}"></span>
+        </div>
+        <h6>Назначение сессии</h6>
+        <form action="/newsession" method="post">
+            <span>Введите id пользователя</span>
+            <input type="number" name="userId" th:value="2" class="form-control"><br>
+            <span>Введите id компьютера</span>
+            <input type="number" name="compId" th:value="1" class="form-control"><br>
+            <span>Введите время сессии</span>
+            <input type="number" name="time" th:value="60" class="form-control"><br>
+            <span>Определите тип сессии (1 - рабочая, 2 - игровая)</span>
+            <input type="number" name="sessionType" th:value="1" class="form-control"><br>
+            <span>Введите комментарий</span>
+            <textarea name="comment" placeholder="Комментарий при создании" class="form-control"></textarea><br>
+            <button type="submit" class="btn btn-success">Зарегистрировать сессию</button>
+        </form>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <div class="my-3 p-3 bg-body rounded shadow-sm">
+        <h6 class="border-bottom pb-2 mb-0">Компьютеры</h6>
+
+        <table class="table table-striped table-sm">
+            <thead>
+            <tr>
+                <th scope="col">id</th>
+                <th scope="col">Наименование</th>
+                <th scope="col">Статус</th>
+                <th scope="col">Тип</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr  th:each="el : ${comps}">
+                <td th:text="${el.id}"></td>
+                <td th:text="${el.name}"></td>
+                <td th:text="${el.getStrStatus()}"></td>
+                <td th:text="${el.getStrType()}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <div class="my-3 p-3 bg-body rounded shadow-sm">
+        <h6 class="border-bottom pb-2 mb-0">Пользователи</h6>
+        <table class="table table-striped table-sm">
+            <thead>
+            <tr>
+                <th scope="col">id</th>
+                <th scope="col">Имя (ник)</th>
+                <th scope="col">Время для рабочего пк</th>
+                <th scope="col">Время для игрового пк</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="el : ${users}">
+                <td th:text="${el.id}"></td>
+                <td th:text="${el.name}"></td>
+                <td th:text="${el.workingCompTime}"></td>
+                <td th:text="${el.gamingCompTime}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="container mt-5">
+<div class="my-3 p-3 bg-body rounded shadow-sm">
+    <h6 class="border-bottom pb-2 mb-0">История сессий</h6>
+    <table class="table table-striped table-sm">
+        <thead>
+        <tr>
+            <th scope="col">id</th>
+            <th scope="col">Компьютер</th>
+            <th scope="col">Пользователь</th>
+            <th scope="col">Время начала сессии</th>
+            <th scope="col">Продолжительность</th>
+            <th scope="col">Активность</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr  th:each="el : ${sessions}">
+            <td th:text="${el.id}"></td>
+            <td th:text="${el.getComputerName()}"></td>
+            <td th:text="${el.getUserName()}"></td>
+            <td th:text="${el.time} + ' минут'"></td>
+            <td th:text="${el.time}"></td>
+            <td th:text="${el.active}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</div>
+</body>
+</html>
